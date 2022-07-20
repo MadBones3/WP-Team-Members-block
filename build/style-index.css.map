@@ -1,0 +1,1 @@
+{"version":3,"file":"./style-index.css","mappings":";;;AAAA;EACC;EACA;EACA;AACD,C","sources":["webpack://boilerplate/./src/style.scss"],"sourcesContent":[".wp-block-create-block-boilerplate {\r\n\tbackground-color: rgb(19, 94, 192);\r\n\tcolor: #fff;\r\n\tpadding: 2px;\r\n}\r\n"],"names":[],"sourceRoot":""}

@@ -1,0 +1,35 @@
+{
+	"name": "boilerplate",
+	"version": "0.1.0",
+	"description": "Example static block scaffolded with Create Block tool.",
+	"author": "The WordPress Contributors",
+	"license": "GPL-2.0-or-later",
+	"main": "build/index.js",
+	"scripts": {
+		"build": "wp-scripts build",
+		"format": "wp-scripts format",
+		"lint:css": "wp-scripts lint-style",
+		"lint:js": "wp-scripts lint-js",
+		"packages-update": "wp-scripts packages-update",
+		"plugin-zip": "wp-scripts plugin-zip",
+		"start": "wp-scripts start"
+	},
+	"prettier": "@wordpress/prettier-config",
+	"stylelint": {
+		"extends": [
+			"@wordpress/stylelint-config/scss"
+		]
+	},
+	"lint-staged": {
+		"*.js": "wp-script lint-js",
+		"*.scss": "wp-scripts lint-style"
+	},
+	"devDependencies": {
+		"@wordpress/eslint-plugin": "^12.6.0",
+		"@wordpress/prettier-config": "^1.4.0",
+		"@wordpress/scripts": "^23.4.0",
+		"@wordpress/stylelint-config": "^20.0.2",
+		"eslint-config-prettier": "^8.5.0",
+		"lint-staged": "^13.0.3"
+	}
+}
