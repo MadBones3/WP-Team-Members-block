@@ -1,15 +1,15 @@
 {
 	"apiVersion": 2,
-	"name": "blocks-course/text-box",
-	"title": "Text Box",
-	"category": "text",
-	"icon": "text-page",
-	"description": "A box of text.",
-	"keywords": [ "text", "paragraph", "box" ],
+	"name": "blocks-course/team-members",
+	"title": "Team Members",
+	"category": "media",
+	"icon": "admin-users",
+	"description": "A team members grid",
+	"keywords": [ "team", "members", "grid" ],
 	"supports": {
 		"html": false
 	},
-	"textdomain": "text-box",
+	"textdomain": "team-members",
 	"editorScript": "file:./build/index.js",
 	"editorStyle": "file:./build/index.css",
 	"style": "file:./build/style-index.css"
