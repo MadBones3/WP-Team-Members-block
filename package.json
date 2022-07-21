@@ -31,5 +31,8 @@
 		"@wordpress/stylelint-config": "^20.0.2",
 		"eslint-config-prettier": "^8.5.0",
 		"lint-staged": "^13.0.3"
+	},
+	"dependencies": {
+		"@wordpress/components": "^19.15.0"
 	}
 }
