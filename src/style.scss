@@ -7,6 +7,9 @@
 		&.has-#{$i}-columns {
 			.wp-block-blocks-course-team-member {
 				width: calc(100% / #{$i} - 20px);
+				@media (max-width: 500px) {
+					width: calc(100% / 2 - 20px);
+				}
 			}
 		}
 	}
@@ -27,6 +30,23 @@
 			font-weight: 300;
 			margin-bottom: 5px;
 			margin-top: 5px;
+		}
+		.wp-block-blocks-course-team-social-links {
+			ul {
+				list-style: none;
+				padding: 0;
+				margin: 15px -5px 0;
+				li {
+					display: inline-block;
+					margin: 5px;
+					a {
+						text-decoration: none;
+					}
+					span.dashicon {
+						color: #4e4e4e;
+					}
+				}
+			}
 		}
 	}
 }

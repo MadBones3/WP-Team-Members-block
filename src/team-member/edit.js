@@ -19,12 +19,22 @@ import {
 	PanelBody,
 	TextareaControl,
 	SelectControl,
+	Icon,
+	Tooltip,
 } from '@wordpress/components';
 
-function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
+function Edit( {
+	attributes,
+	setAttributes,
+	noticeOperations,
+	noticeUI,
+	isSelected,
+} ) {
+	const { name, bio, url, alt, id, socialLinks } = attributes;
 	const [ blobURL, setBlobURL ] = useState();
-	const { name, bio, url, alt, id } = attributes;
+	const [ selectedLink, setSelectedLink ] = useState();
 
+	const prevIsSelected = usePrevious( isSelected );
 	const prevURL = usePrevious( url );
 	const titleRef = useRef();
 
@@ -89,6 +99,12 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 			id: undefined,
 		} );
 	};
+	const addNewSocialItem = () => {
+		setAttributes( {
+			socialLinks: [ ...socialLinks, { icon: 'wordpress', link: '' } ],
+		} );
+		setSelectedLink( socialLinks.length );
+	};
 	const onChangeImageSize = ( newURL ) => {
 		setAttributes( { url: newURL } );
 	};
@@ -116,6 +132,12 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 			titleRef.current.focus();
 		}
 	}, [ url, prevURL ] );
+	// deselects the Social link if its selected but you are on another block
+	useEffect( () => {
+		if ( prevIsSelected && ! isSelected ) {
+			setSelectedLink();
+		}
+	}, [ isSelected, prevIsSelected ] );
 
 	return (
 		<>
@@ -194,6 +216,43 @@ function Edit( { attributes, setAttributes, noticeOperations, noticeUI } ) {
 					onChange={ onChangeBio }
 					allowedFormats={ [] }
 				/>
+				<div className="wp-block-blocks-course-team-social-links">
+					<ul>
+						{ socialLinks.map( ( item, index ) => {
+							return (
+								<li
+									key={ index }
+									className={
+										selectedLink === index
+											? 'is-selected'
+											: null
+									}
+								>
+									<button
+										aria-label={ 'Edit Social link' }
+										onClick={ () =>
+											setSelectedLink( index )
+										}
+									>
+										<Icon icon={ item.icon } />
+									</button>
+								</li>
+							);
+						} ) }
+						{ isSelected && (
+							<li className="wp-block-blocks-course-team-add-icon-li">
+								<Tooltip text={ 'Add Social Link' }>
+									<button
+										aria-label={ 'Add Social Link' }
+										onClick={ addNewSocialItem }
+									>
+										<Icon icon="plus" />
+									</button>
+								</Tooltip>
+							</li>
+						) }
+					</ul>
+				</div>
 			</div>
 		</>
 	);
