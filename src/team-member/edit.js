@@ -21,6 +21,9 @@ import {
 	SelectControl,
 	Icon,
 	Tooltip,
+	TextControl,
+	button,
+	Button,
 } from '@wordpress/components';
 
 function Edit( {
@@ -108,6 +111,21 @@ function Edit( {
 	const onChangeImageSize = ( newURL ) => {
 		setAttributes( { url: newURL } );
 	};
+	const updateSocialItem = ( type, value ) => {
+		const socialLinksCopy = [ ...socialLinks ];
+		socialLinksCopy[ selectedLink ][ type ] = value;
+		setAttributes( { socialLinks: socialLinksCopy } );
+	};
+	const removeSocialItem = () => {
+		setAttributes( {
+			socialLinks: [
+				...socialLinks.slice( 0, selectedLink ),
+				...socialLinks.slice( selectedLink + 1 ),
+			],
+		} );
+		setSelectedLink();
+	};
+
 	// if user upload img then updates and refresh before uploaded done then will just show upload box again
 	useEffect( () => {
 		if ( ! id && isBlobURL( url ) ) {
@@ -253,6 +271,28 @@ function Edit( {
 						) }
 					</ul>
 				</div>
+				{ selectedLink !== undefined && (
+					<div className="wp-block-blocks-course-team-member-social-link-form">
+						<TextControl
+							label={ 'Dashicon Icon' }
+							value={ socialLinks[ selectedLink ].icon }
+							onChange={ ( icon ) =>
+								updateSocialItem( 'icon', icon )
+							}
+						/>
+						<TextControl
+							label={ 'URL' }
+							value={ socialLinks[ selectedLink ].link }
+							onChange={ ( link ) =>
+								updateSocialItem( 'link', link )
+							}
+						/>
+						<br />
+						<Button isDestructive onClick={ removeSocialItem }>
+							{ 'Remove link' }
+						</Button>
+					</div>
+				) }
 			</div>
 		</>
 	);

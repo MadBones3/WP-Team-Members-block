@@ -268,6 +268,21 @@ function Edit(_ref) {
     setAttributes({
       url: newURL
     });
+  };
+
+  const updateSocialItem = (type, value) => {
+    const socialLinksCopy = [...socialLinks];
+    socialLinksCopy[selectedLink][type] = value;
+    setAttributes({
+      socialLinks: socialLinksCopy
+    });
+  };
+
+  const removeSocialItem = () => {
+    setAttributes({
+      socialLinks: [...socialLinks.slice(0, selectedLink), ...socialLinks.slice(selectedLink + 1)]
+    });
+    setSelectedLink();
   }; // if user upload img then updates and refresh before uploaded done then will just show upload box again
 
 
@@ -373,7 +388,20 @@ function Edit(_ref) {
     onClick: addNewSocialItem
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Icon, {
     icon: "plus"
-  }))))))));
+  })))))), selectedLink !== undefined && (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("div", {
+    className: "wp-block-blocks-course-team-member-social-link-form"
+  }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+    label: 'Dashicon Icon',
+    value: socialLinks[selectedLink].icon,
+    onChange: icon => updateSocialItem('icon', icon)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.TextControl, {
+    label: 'URL',
+    value: socialLinks[selectedLink].link,
+    onChange: link => updateSocialItem('link', link)
+  }), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("br", null), (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.Button, {
+    isDestructive: true,
+    onClick: removeSocialItem
+  }, 'Remove link'))));
 }
 
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ((0,_wordpress_components__WEBPACK_IMPORTED_MODULE_6__.withNotices)(Edit));
@@ -441,7 +469,20 @@ __webpack_require__.r(__webpack_exports__);
       }, {
         link: 'https://instagram.com',
         icon: 'instagram'
-      }]
+      }],
+      source: 'query',
+      selector: '.wp-block-blocks-course-team-social-links ul li',
+      query: {
+        icon: {
+          source: 'attribute',
+          attribute: 'data-icon'
+        },
+        link: {
+          source: 'attribute',
+          selector: 'a',
+          attribute: 'href'
+        }
+      }
     }
   },
   edit: _edit__WEBPACK_IMPORTED_MODULE_1__["default"],
@@ -498,7 +539,8 @@ function Save(_ref) {
     className: "wp-block-blocks-course-team-social-links"
   }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("ul", null, socialLinks.map((item, index) => {
     return (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("li", {
-      key: index
+      key: index,
+      "data-icon": item.icon
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)("a", {
       href: item.link
     }, (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.createElement)(_wordpress_components__WEBPACK_IMPORTED_MODULE_3__.Icon, {
