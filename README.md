@@ -2,7 +2,7 @@
 
 ## Team Members Block Preview
 
-![Banner preview](https://github.com/MadBones3/WP-Team-Members-block/blob/master/img/Team-members-block.PNG)
+![Banner preview](https://github.com/MadBones3/WP-Team-Members-block/blob/main/img/Team-members-block.PNG)
 
 ### Install
 
