@@ -25,6 +25,20 @@ import {
 	button,
 	Button,
 } from '@wordpress/components';
+// Draggable
+import {
+	DndContext,
+	useSensor,
+	useSensors,
+	PointerSensor,
+} from '@dnd-kit/core';
+import {
+	SortableContext,
+	horizontalListSortingStrategy,
+	arrayMove,
+} from '@dnd-kit/sortable';
+import { restrictToHorizontalAxis } from '@dnd-kit/modifiers';
+import SortableItem from './sortable-item';
 
 function Edit( {
 	attributes,
@@ -40,6 +54,13 @@ function Edit( {
 	const prevIsSelected = usePrevious( isSelected );
 	const prevURL = usePrevious( url );
 	const titleRef = useRef();
+
+	//draggable sensors
+	const sensors = useSensors(
+		useSensor( PointerSensor, {
+			activationConstraint: { distance: 5 },
+		} )
+	);
 
 	const imageObject = useSelect(
 		( select ) => {
@@ -124,6 +145,22 @@ function Edit( {
 			],
 		} );
 		setSelectedLink();
+	};
+
+	const handleDragEnd = ( event ) => {
+		const { active, over } = event;
+		if ( active && over && active.id != over.id ) {
+			const oldIndex = socialLinks.findIndex(
+				( i ) => active.id === `${ i.icon }-${ i.link }`
+			);
+			const newIndex = socialLinks.findIndex(
+				( i ) => over.id === `${ i.icon }-${ i.link }`
+			);
+			setAttributes( {
+				socialLinks: arrayMove( socialLinks, oldIndex, newIndex ),
+			} );
+			setSelectedLink( newIndex );
+		}
 	};
 
 	// if user upload img then updates and refresh before uploaded done then will just show upload box again
@@ -236,27 +273,32 @@ function Edit( {
 				/>
 				<div className="wp-block-blocks-course-team-social-links">
 					<ul>
-						{ socialLinks.map( ( item, index ) => {
-							return (
-								<li
-									key={ index }
-									className={
-										selectedLink === index
-											? 'is-selected'
-											: null
-									}
-								>
-									<button
-										aria-label={ 'Edit Social link' }
-										onClick={ () =>
-											setSelectedLink( index )
-										}
-									>
-										<Icon icon={ item.icon } />
-									</button>
-								</li>
-							);
-						} ) }
+						<DndContext
+							sensors={ sensors }
+							onDragEnd={ handleDragEnd }
+							modifiers={ [ restrictToHorizontalAxis ] }
+						>
+							<SortableContext
+								items={ socialLinks.map(
+									( item ) => `${ item.icon }-${ item.link }`
+								) }
+								strategy={ horizontalListSortingStrategy }
+							>
+								{ socialLinks.map( ( item, index ) => {
+									return (
+										<SortableItem
+											key={ `${ item.icon }-${ item.link }` }
+											id={ `${ item.icon }-${ item.link }` }
+											index={ index }
+											selectedLink={ selectedLink }
+											setSelectedLink={ setSelectedLink }
+											icon={ item.icon }
+										/>
+									);
+								} ) }
+							</SortableContext>
+						</DndContext>
+
 						{ isSelected && (
 							<li className="wp-block-blocks-course-team-add-icon-li">
 								<Tooltip text={ 'Add Social Link' }>
