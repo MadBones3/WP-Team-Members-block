@@ -5390,7 +5390,55 @@ __webpack_require__.r(__webpack_exports__);
 
 (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.registerBlockType)('blocks-course/team-members', {
   edit: _edit__WEBPACK_IMPORTED_MODULE_3__["default"],
-  save: _save__WEBPACK_IMPORTED_MODULE_4__["default"]
+  save: _save__WEBPACK_IMPORTED_MODULE_4__["default"],
+  transforms: {
+    from: [{
+      type: 'block',
+      blocks: ['core/gallery'],
+      transform: _ref => {
+        let {
+          images,
+          columns
+        } = _ref;
+        const innerBlock = images.map(_ref2 => {
+          let {
+            url,
+            id,
+            alt
+          } = _ref2;
+          return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.createBlock)('blocks-course/team-member', {
+            alt,
+            id,
+            url
+          });
+        });
+        return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.createBlock)('blocks-course/team-members', {
+          columns: columns || 2
+        }, innerBlock);
+      }
+    }, {
+      type: 'block',
+      blocks: ['core/image'],
+      isMultiBlock: true,
+      transform: attributes => {
+        const innerBlock = attributes.map(_ref3 => {
+          let {
+            url,
+            id,
+            alt
+          } = _ref3;
+          return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.createBlock)('blocks-course/team-member', {
+            alt,
+            id,
+            url
+          });
+        });
+        return (0,_wordpress_blocks__WEBPACK_IMPORTED_MODULE_0__.createBlock)('blocks-course/team-members', {
+          columns: attributes.length > 3 ? 3 : attributes.length
+        }, innerBlock);
+      }
+    }]
+  }
 });
 
 /***/ }),
@@ -5648,7 +5696,7 @@ function Edit(_ref) {
   }, [url]); // Automatically move cursor to next element to type
 
   (0,_wordpress_element__WEBPACK_IMPORTED_MODULE_0__.useEffect)(() => {
-    if (url && !prevURL) {
+    if (url && !prevURL && isSelected) {
       titleRef.current.focus();
     }
   }, [url, prevURL]); // deselects the Social link if its selected but you are on another block
